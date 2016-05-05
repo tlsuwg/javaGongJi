@@ -1,8 +1,7 @@
-package gongji.tomcat.cando;
+package gongji.tomcat.linksend;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -11,7 +10,9 @@ public class Linker {
 	LinkerManger manger;
 
 	Socket s;
-	BufferedWriter br;
+//	BufferedWriter br;
+//	OutputStreamWriter mOutputStreamWriter;
+	OutputStream mOutputStream;
 
 
 
@@ -22,7 +23,9 @@ public class Linker {
 
 		try {
 			s = new Socket(ip, port);
-			br = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+			mOutputStream=s.getOutputStream();
+//			mOutputStreamWriter=	new OutputStreamWriter(mOutputStream);
+//			br = new BufferedWriter(mOutputStreamWriter);
 			manger.addOne(this);
 			send();
 
@@ -36,13 +39,15 @@ public class Linker {
 		
 		
 	}
+	
+	byte[] bs=new byte[10*1];
 
 	public void send() {
 
 		if (s.isConnected()) {
 			try {
-				br.write("SHUTDOWN");
-				br.flush();
+				mOutputStream.write(bs);
+//				br.flush();
 			} catch (IOException e) {
 				// e.printStackTrace();
 				remove();
@@ -57,7 +62,9 @@ public class Linker {
 		manger.removeOne(this);
 
 		try {
-			br.close();
+//			br.close();
+//			mOutputStreamWriter.close();
+			mOutputStream.close();
 			s.close();
 		} catch (IOException e1) {
 

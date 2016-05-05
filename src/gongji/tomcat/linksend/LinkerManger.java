@@ -1,4 +1,4 @@
-package gongji.tomcat.cando;
+package gongji.tomcat.linksend;
 
 import java.util.ArrayList;
 import java.util.List;
